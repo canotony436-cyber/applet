@@ -68,6 +68,11 @@
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+        .answer-badge {
+            background: linear-gradient(135deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
         .canvas-container {
             position: relative;
             cursor: grab;
@@ -80,15 +85,15 @@
 <body class="min-h-screen flex flex-col justify-between antialiased">
 
     <!-- Header -->
-    <header class="border-b border-slate-800 bg-slate-900/80 sticky top-0 z-50 backdrop-blur-md">
+    <header class="border-b border-slate-800 bg-slate-900/90 sticky top-0 z-50 backdrop-blur-md">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
-                <div class="p-2 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-xl text-white shadow-lg shadow-blue-500/30">
-                    <i class="fa-solid font-bold fa-chart-line text-xl"></i>
+                <div class="p-2 bg-gradient-to-tr from-blue-600 via-indigo-500 to-purple-500 rounded-xl text-white shadow-lg shadow-blue-500/20">
+                    <i class="fa-solid font-bold fa-square-root-variable text-xl"></i>
                 </div>
                 <div>
-                    <h1 class="text-lg font-bold text-white tracking-tight leading-tight">Explorador Matemático Interactivo</h1>
-                    <p class="text-xs text-slate-400">Aprende Funciones, Límites y Derivadas de forma intuitiva</p>
+                    <h1 class="text-lg font-bold text-white tracking-tight leading-tight">Laboratorio Interactivo de Cálculo</h1>
+                    <p class="text-xs text-slate-400">Evaluación, Límites Laterales y Recta Tangente en $x = a$</p>
                 </div>
             </div>
             
@@ -107,223 +112,242 @@
         <!-- Controls Column (4 cols on lg) -->
         <div class="lg:col-span-4 flex flex-col space-y-5">
             
-            <!-- Panel: Definición de Función -->
-            <div class="glass-panel rounded-2xl p-5 shadow-xl">
-                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider mb-3 flex items-center justify-between">
-                    <span>1. Función $f(x)$</span>
-                    <i class="fa-solid fa-function text-blue-400"></i>
+            <!-- Panel 1: Función f(x) y Punto 'a' -->
+            <div class="glass-panel rounded-2xl p-5 shadow-xl space-y-4">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>1. Función y Punto de Estudio</span>
+                    <i class="fa-solid fa-pen-ruler text-blue-400"></i>
                 </h2>
                 
                 <div class="space-y-3">
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1">Escribe una fórmula:</label>
+                        <label class="block text-xs text-slate-300 mb-1 font-medium">Ingresa la función $f(x)$:</label>
                         <div class="relative">
-                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400 font-mono font-semibold">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-blue-400 font-mono font-bold text-sm">
                                 f(x) =
                             </div>
-                            <input type="text" id="funcInput" value="x^2 - 3*x + 2" 
-                                class="w-full pl-14 pr-10 py-2.5 bg-slate-900 border border-slate-700 rounded-xl text-white font-mono text-sm focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition shadow-inner">
+                            <input type="text" id="funcInput" value="x^2 - 4" 
+                                class="w-full pl-16 pr-10 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white font-mono text-sm focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition shadow-inner">
                             <button id="btnClearFunc" class="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-500 hover:text-slate-300">
                                 <i class="fa-solid fa-xmark"></i>
                             </button>
                         </div>
-                        <p id="funcError" class="text-red-400 text-xs mt-1 hidden font-mono"></p>
+                        <p id="funcError" class="text-red-400 text-xs mt-1.5 hidden font-mono bg-red-950/40 p-2 rounded border border-red-900/50"></p>
                     </div>
 
                     <!-- Presets rápidos -->
                     <div>
-                        <label class="block text-xs text-slate-400 mb-1.5">Ejemplos rápidos:</label>
+                        <label class="block text-[11px] text-slate-400 mb-1.5 font-medium">Ejemplos rápidos:</label>
                         <div class="grid grid-cols-2 gap-2 text-xs">
-                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 text-left transition truncate" data-func="x^2 - 3*x + 2">
-                                📐 Cuadrática
+                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-left transition truncate font-mono" data-func="x^2 - 4">
+                                x² - 4
                             </button>
-                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 text-left transition truncate" data-func="0.5*x^3 - 2*x">
-                                〰️ Cúbica
+                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-left transition truncate font-mono" data-func="sin(x)">
+                                sin(x)
                             </button>
-                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 text-left transition truncate" data-func="2 * sin(x)">
-                                🌊 Seno
+                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-left transition truncate font-mono" data-func="1/x">
+                                1 / x
                             </button>
-                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700/60 text-left transition truncate" data-func="1 / (x - 1)">
-                                ⚡ Discontinuidad
+                            <button class="preset-btn px-2.5 py-1.5 rounded-lg bg-slate-800/80 hover:bg-slate-700 text-slate-200 border border-slate-700/60 text-left transition truncate font-mono" data-func="x^3 - 3*x">
+                                x³ - 3x
                             </button>
                         </div>
+                    </div>
+
+                    <!-- Control del Punto 'a' -->
+                    <div class="pt-3 border-t border-slate-800 space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <label class="text-slate-200 font-semibold flex items-center gap-1.5">
+                                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 inline-block"></span>
+                                Evaluado en punto $a$:
+                            </label>
+                            <div class="flex items-center gap-1">
+                                <span class="text-slate-400 font-mono text-xs">a =</span>
+                                <input type="number" id="aNumInput" value="2.00" step="0.1" class="w-16 px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded text-right font-mono text-xs text-emerald-400 font-bold focus:outline-none focus:border-emerald-500">
+                            </div>
+                        </div>
+                        <input type="range" id="aSlider" min="-5" max="5" step="0.05" value="2" 
+                            class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-emerald-500">
                     </div>
                 </div>
             </div>
 
-            <!-- Panel: Parámetro x0 y Derivada -->
-            <div class="glass-panel rounded-2xl p-5 shadow-xl space-y-4">
-                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center justify-between">
-                    <span>2. Evaluador y Derivada</span>
-                    <i class="fa-solid fa-square-root-variable text-emerald-400"></i>
+            <!-- Panel 2: Configuración Visual de Capas -->
+            <div class="glass-panel rounded-2xl p-4 shadow-xl space-y-3">
+                <h2 class="text-xs font-bold text-slate-400 uppercase tracking-wider flex items-center justify-between">
+                    <span>2. Capas del Gráfico</span>
+                    <i class="fa-solid fa-layer-group text-purple-400"></i>
                 </h2>
 
-                <!-- Control de x0 -->
-                <div class="space-y-2">
-                    <div class="flex justify-between items-center text-xs">
-                        <label class="text-slate-300 font-medium">Punto de evaluación ($x_0$):</label>
-                        <span id="x0ValDisplay" class="font-mono text-emerald-400 bg-emerald-950/60 px-2 py-0.5 rounded border border-emerald-800/50 font-bold">1.50</span>
-                    </div>
-                    <input type="range" id="x0Slider" min="-5" max="5" step="0.05" value="1.5" 
-                        class="w-full h-2 bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                </div>
-
-                <!-- Toggles para Derivada -->
-                <div class="space-y-2 pt-2 border-t border-slate-800">
-                    <label class="flex items-center space-x-3 cursor-pointer group">
-                        <input type="checkbox" id="chkShowTangent" checked class="w-4 h-4 text-emerald-600 bg-slate-900 border-slate-700 rounded focus:ring-emerald-500 focus:ring-offset-slate-900">
-                        <span class="text-xs text-slate-300 group-hover:text-white transition">Mostrar Recta Tangente</span>
+                <div class="space-y-2 text-xs">
+                    <label class="flex items-center justify-between p-2 rounded-xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800 cursor-pointer transition">
+                        <span class="flex items-center gap-2 text-slate-200">
+                            <span class="w-3 h-0.5 bg-emerald-400 rounded"></span> Recta Tangente
+                        </span>
+                        <input type="checkbox" id="chkShowTangent" checked class="w-4 h-4 text-emerald-500 bg-slate-900 border-slate-700 rounded focus:ring-emerald-500 focus:ring-offset-slate-900">
                     </label>
-                    
-                    <label class="flex items-center space-x-3 cursor-pointer group">
-                        <input type="checkbox" id="chkShowDerivative" class="w-4 h-4 text-purple-600 bg-slate-900 border-slate-700 rounded focus:ring-purple-500 focus:ring-offset-slate-900">
-                        <span class="text-xs text-slate-300 group-hover:text-white transition">Graficar Curva Derivada $f'(x)$</span>
+
+                    <label class="flex items-center justify-between p-2 rounded-xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800 cursor-pointer transition">
+                        <span class="flex items-center gap-2 text-slate-200">
+                            <span class="w-3 h-0.5 bg-amber-400 rounded"></span> Aproximaciones de Límite
+                        </span>
+                        <input type="checkbox" id="chkShowLimitVisual" checked class="w-4 h-4 text-amber-500 bg-slate-900 border-slate-700 rounded focus:ring-amber-500 focus:ring-offset-slate-900">
+                    </label>
+
+                    <label class="flex items-center justify-between p-2 rounded-xl bg-slate-900/50 hover:bg-slate-900 border border-slate-800 cursor-pointer transition">
+                        <span class="flex items-center gap-2 text-slate-200">
+                            <span class="w-3 h-0.5 bg-purple-400 rounded"></span> Curva Derivada $f'(x)$
+                        </span>
+                        <input type="checkbox" id="chkShowDerivative" class="w-4 h-4 text-purple-500 bg-slate-900 border-slate-700 rounded focus:ring-purple-500 focus:ring-offset-slate-900">
                     </label>
                 </div>
             </div>
 
-            <!-- Panel: Explorador de Límites -->
-            <div class="glass-panel rounded-2xl p-5 shadow-xl space-y-4">
-                <h2 class="text-sm font-semibold text-slate-300 uppercase tracking-wider flex items-center justify-between">
-                    <span>3. Explorador de Límite</span>
-                    <i class="fa-solid fa-arrows-to-line text-amber-400"></i>
-                </h2>
-
-                <div class="space-y-3">
-                    <label class="flex items-center space-x-3 cursor-pointer">
-                        <input type="checkbox" id="chkEnableLimit" class="w-4 h-4 text-amber-500 bg-slate-900 border-slate-700 rounded focus:ring-amber-500 focus:ring-offset-slate-900">
-                        <span class="text-xs font-semibold text-amber-300">Activar Análisis de Límite ($\lim_{x \to c}$)</span>
-                    </label>
-
-                    <div id="limitControls" class="space-y-3 pl-2 border-l-2 border-amber-500/30 opacity-50 pointer-events-none transition-all">
-                        <div>
-                            <div class="flex justify-between items-center text-xs mb-1">
-                                <span class="text-slate-300">Aproximar a $c$:</span>
-                                <span id="cValDisplay" class="font-mono text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/50">1.00</span>
-                            </div>
-                            <input type="range" id="cSlider" min="-5" max="5" step="0.05" value="1.0" 
-                                class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                        </div>
-
-                        <div>
-                            <div class="flex justify-between items-center text-xs mb-1">
-                                <span class="text-slate-300">Distancia de aproximación ($h$):</span>
-                                <span id="hValDisplay" class="font-mono text-amber-300">0.100</span>
-                            </div>
-                            <input type="range" id="hSlider" min="0.001" max="1" step="0.005" value="0.1" 
-                                class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer">
-                        </div>
-                    </div>
+            <!-- Panel 3: Ajuste de Paso h para Límites -->
+            <div class="glass-panel rounded-2xl p-4 shadow-xl space-y-2">
+                <div class="flex justify-between items-center text-xs">
+                    <span class="text-slate-300 font-medium">Paso de aproximación lateral ($h$):</span>
+                    <span id="hValDisplay" class="font-mono text-amber-400 bg-amber-950/60 px-2 py-0.5 rounded border border-amber-800/50 text-xs">0.010</span>
                 </div>
+                <input type="range" id="hSlider" min="0.001" max="0.5" step="0.005" value="0.01" 
+                    class="w-full h-1.5 bg-slate-800 rounded-lg appearance-none cursor-pointer accent-amber-500">
             </div>
 
         </div>
 
-        <!-- Visualization Column (8 cols on lg) -->
+        <!-- Visualization & Explicit Answers Column (8 cols on lg) -->
         <div class="lg:col-span-8 flex flex-col space-y-5">
             
+            <!-- EXPLICIT RESULT DISPLAY CARDS -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                
+                <!-- 1. EVALUACIÓN f(a) -->
+                <div class="answer-badge rounded-2xl p-3.5 shadow-lg flex flex-col justify-between border-t-2 border-blue-500">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">EVALUACIÓN EN $a$</span>
+                        <i class="fa-solid fa-bullseye text-blue-400 text-xs"></i>
+                    </div>
+                    <div class="my-1">
+                        <div class="text-xs text-slate-400 font-mono" id="evalFormula">f(2.00) =</div>
+                        <div class="text-xl font-bold font-mono text-white tracking-tight" id="evalAnswer">0.000</div>
+                    </div>
+                    <div class="text-[10px] text-slate-400 truncate" id="evalSubtext">Valor exacto del punto en la curva</div>
+                </div>
+
+                <!-- 2. RESPUESTA DEL LÍMITE -->
+                <div class="answer-badge rounded-2xl p-3.5 shadow-lg flex flex-col justify-between border-t-2 border-amber-500">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-amber-400 uppercase tracking-wider">LÍMITE $\lim_{x \to a} f(x)$</span>
+                        <i class="fa-solid fa-arrows-to-line text-amber-400 text-xs"></i>
+                    </div>
+                    <div class="my-1">
+                        <div class="text-[11px] text-slate-400 font-mono truncate" id="limitFormula">lim x→2.00 f(x) =</div>
+                        <div class="text-xl font-bold font-mono text-amber-300 tracking-tight" id="limitAnswer">0.000</div>
+                    </div>
+                    <div class="text-[10px] text-amber-200/80 truncate font-mono" id="limitSubtext">Izq: 0.000 | Der: 0.000</div>
+                </div>
+
+                <!-- 3. RESPUESTA DE LA DERIVADA -->
+                <div class="answer-badge rounded-2xl p-3.5 shadow-lg flex flex-col justify-between border-t-2 border-emerald-500">
+                    <div class="flex items-center justify-between mb-1">
+                        <span class="text-[11px] font-bold text-emerald-400 uppercase tracking-wider">DERIVADA $f'(a)$</span>
+                        <i class="fa-solid fa-chart-line text-emerald-400 text-xs"></i>
+                    </div>
+                    <div class="my-1">
+                        <div class="text-[11px] text-slate-400 font-mono truncate" id="derivFormula">f'(2.00) =</div>
+                        <div class="text-xl font-bold font-mono text-emerald-300 tracking-tight" id="derivAnswer">4.000</div>
+                    </div>
+                    <div class="text-[10px] text-emerald-200/90 font-mono truncate" id="tangentEqAnswer">y = 4.00x - 8.00</div>
+                </div>
+
+            </div>
+
             <!-- Graph Canvas Container -->
             <div class="glass-panel rounded-2xl p-4 shadow-xl flex flex-col flex-grow relative">
                 <!-- Top Toolbar of Canvas -->
-                <div class="flex items-center justify-between mb-3 px-1">
+                <div class="flex items-center justify-between mb-2 px-1">
                     <div class="flex items-center space-x-3 text-xs">
-                        <span class="flex items-center gap-1.5 text-blue-400 font-medium">
-                            <span class="w-3 h-0.5 bg-blue-500 inline-block rounded"></span> $f(x)$
+                        <span class="flex items-center gap-1.5 text-blue-400 font-semibold">
+                            <span class="w-3 h-0.5 bg-blue-500 inline-block rounded"></span> f(x)
                         </span>
-                        <span id="legendTangent" class="flex items-center gap-1.5 text-emerald-400 font-medium">
+                        <span id="legendTangent" class="flex items-center gap-1.5 text-emerald-400 font-semibold">
                             <span class="w-3 h-0.5 bg-emerald-400 inline-block rounded"></span> Tangente
                         </span>
-                        <span id="legendDerivative" class="hidden flex items-center gap-1.5 text-purple-400 font-medium">
-                            <span class="w-3 h-0.5 bg-purple-400 inline-block rounded"></span> $f'(x)$
+                        <span id="legendDerivative" class="hidden flex items-center gap-1.5 text-purple-400 font-semibold">
+                            <span class="w-3 h-0.5 bg-purple-400 inline-block rounded"></span> f'(x)
                         </span>
                     </div>
 
                     <!-- Canvas Navigation Tools -->
-                    <div class="flex items-center space-x-1.5 bg-slate-900/80 p-1 rounded-lg border border-slate-700/80">
-                        <button id="btnZoomIn" title="Acercar" class="w-7 h-7 flex items-center justify-center hover:bg-slate-800 rounded text-slate-300 transition">
+                    <div class="flex items-center space-x-1.5 bg-slate-900/90 p-1 rounded-xl border border-slate-700/80">
+                        <button id="btnZoomIn" title="Acercar" class="w-7 h-7 flex items-center justify-center hover:bg-slate-800 rounded-lg text-slate-300 transition">
                             <i class="fa-solid fa-plus text-xs"></i>
                         </button>
-                        <button id="btnZoomOut" title="Alejar" class="w-7 h-7 flex items-center justify-center hover:bg-slate-800 rounded text-slate-300 transition">
+                        <button id="btnZoomOut" title="Alejar" class="w-7 h-7 flex items-center justify-center hover:bg-slate-800 rounded-lg text-slate-300 transition">
                             <i class="fa-solid fa-minus text-xs"></i>
                         </button>
-                        <button id="btnResetView" title="Restablecer Vista" class="w-7 h-7 flex items-center justify-center hover:bg-slate-800 rounded text-slate-300 transition">
+                        <button id="btnResetView" title="Restablecer Vista" class="w-7 h-7 flex items-center justify-center hover:bg-slate-800 rounded-lg text-slate-300 transition">
                             <i class="fa-solid fa-rotate-left text-xs"></i>
                         </button>
                     </div>
                 </div>
 
                 <!-- Canvas Wrapper -->
-                <div id="canvasWrapper" class="relative flex-grow w-full h-[380px] sm:h-[420px] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 canvas-container">
+                <div id="canvasWrapper" class="relative flex-grow w-full h-[360px] sm:h-[400px] bg-slate-950 rounded-xl overflow-hidden border border-slate-800 canvas-container">
                     <canvas id="graphCanvas" class="w-full h-full block"></canvas>
 
                     <!-- Instructional Overlay Badge -->
-                    <div class="absolute bottom-3 right-3 pointer-events-none bg-slate-900/80 backdrop-blur px-2.5 py-1 rounded-md border border-slate-800 text-[10px] text-slate-400">
-                        <i class="fa-solid fa-hand-pointer mr-1 text-slate-500"></i> Arrastra para mover | Rueda de mouse para zoom
+                    <div class="absolute bottom-3 right-3 pointer-events-none bg-slate-900/90 backdrop-blur px-2.5 py-1 rounded-lg border border-slate-800 text-[10px] text-slate-400 flex items-center gap-1.5">
+                        <i class="fa-solid fa-hand-pointer text-blue-400"></i> Drag para mover | Rueda para Zoom
                     </div>
                 </div>
             </div>
 
-            <!-- Results Cards Section -->
+            <!-- Detailed Explanation & Breakdown Section -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                 
-                <!-- Card: Evaluación y Derivada -->
-                <div class="glass-panel rounded-2xl p-4 shadow-xl flex flex-col justify-between border-l-4 border-emerald-500">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400">Punto y Derivada Instantánea</h3>
-                            <i class="fa-solid fa-calculator text-emerald-500/50"></i>
+                <!-- Breakdown: Límites Laterales -->
+                <div class="glass-panel rounded-2xl p-4 shadow-xl border-l-4 border-amber-500 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-magnifying-glass font-normal"></i> Análisis del Límite Lateral
+                        </h3>
+                        <span class="text-[10px] text-slate-400 font-mono">h = <span id="hStepText">0.010</span></span>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-2 text-xs font-mono">
+                        <div class="bg-slate-950/70 p-2 rounded-xl border border-slate-800">
+                            <div class="text-[10px] text-slate-400 mb-0.5">Por la Izquierda ($a - h$):</div>
+                            <div class="text-amber-300 font-bold" id="limLeftDetail">f(1.99) = -0.040</div>
                         </div>
-                        
-                        <div class="space-y-2 text-sm">
-                            <div class="flex justify-between items-baseline border-b border-slate-800/80 pb-1.5">
-                                <span class="text-slate-400 text-xs">Evaluación en $x_0$:</span>
-                                <span class="font-mono font-bold text-white" id="outFx0">f(1.50) = -0.25</span>
-                            </div>
-                            <div class="flex justify-between items-baseline border-b border-slate-800/80 pb-1.5">
-                                <span class="text-slate-400 text-xs">Pendiente Tangente $f'(x_0)$:</span>
-                                <span class="font-mono font-bold text-emerald-300" id="outSlope">m = 0.00</span>
-                            </div>
+                        <div class="bg-slate-950/70 p-2 rounded-xl border border-slate-800">
+                            <div class="text-[10px] text-slate-400 mb-0.5">Por la Derecha ($a + h$):</div>
+                            <div class="text-amber-300 font-bold" id="limRightDetail">f(2.01) = 0.040</div>
                         </div>
                     </div>
 
-                    <!-- Explicación Didáctica -->
-                    <div class="mt-3 bg-emerald-950/30 rounded-xl p-2.5 border border-emerald-900/40 text-xs text-emerald-200/90 leading-relaxed">
-                        <i class="fa-solid fa-lightbulb text-amber-400 mr-1"></i>
-                        <span id="derivativeExplanation">
-                            La derivada en este punto es <strong class="text-emerald-300" id="expSlopeText">positiva</strong>. La función está <strong id="expTrendText" class="text-emerald-300">creciendo</strong> hacia la derecha.
-                        </span>
-                    </div>
+                    <p class="text-xs text-slate-300 bg-amber-950/20 p-2.5 rounded-xl border border-amber-900/30 leading-relaxed" id="limitConclusionExplanation">
+                        Como ambos límites laterales convergen al mismo número, el límite existe en el punto.
+                    </p>
                 </div>
 
-                <!-- Card: Análisis del Límite -->
-                <div class="glass-panel rounded-2xl p-4 shadow-xl flex flex-col justify-between border-l-4 border-amber-500">
-                    <div>
-                        <div class="flex justify-between items-center mb-2">
-                            <h3 class="text-xs font-bold uppercase tracking-wider text-amber-400">Análisis de Límite</h3>
-                            <i class="fa-solid fa-arrows-left-right text-amber-500/50"></i>
-                        </div>
-
-                        <div id="limitDisabledMsg" class="text-xs text-slate-500 py-4 text-center italic">
-                            Activa el "Análisis de Límite" en el panel izquierdo para ver el comportamiento lateral de la función.
-                        </div>
-
-                        <div id="limitResultsGroup" class="space-y-2 text-xs hidden">
-                            <div class="flex justify-between items-center bg-slate-900/60 p-1.5 rounded border border-slate-800">
-                                <span class="text-slate-400">Izquierda ($c - h$):</span>
-                                <span class="font-mono text-amber-300" id="outLimitLeft">f(0.90) = 0.110</span>
-                            </div>
-                            <div class="flex justify-between items-center bg-slate-900/60 p-1.5 rounded border border-slate-800">
-                                <span class="text-slate-400">Derecha ($c + h$):</span>
-                                <span class="font-mono text-amber-300" id="outLimitRight">f(1.10) = -0.090</span>
-                            </div>
-                        </div>
+                <!-- Breakdown: Recta Tangente e Interpretación de Derivada -->
+                <div class="glass-panel rounded-2xl p-4 shadow-xl border-l-4 border-emerald-500 space-y-2">
+                    <div class="flex justify-between items-center">
+                        <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
+                            <i class="fa-solid fa-ruler-combined font-normal"></i> Recta Tangente y Pendiente
+                        </h3>
+                        <span class="text-[10px] text-emerald-300 font-mono font-semibold" id="slopeTag">m = 4.00</span>
                     </div>
 
-                    <!-- Conclusión del Límite -->
-                    <div id="limitConclusionBox" class="mt-3 bg-amber-950/30 rounded-xl p-2.5 border border-amber-900/40 text-xs text-amber-200/90 leading-relaxed hidden">
-                        <i class="fa-solid fa-circle-info text-amber-400 mr-1"></i>
-                        <span id="limitExplanationText">Los límites laterales convergen al mismo valor. El límite existe.</span>
+                    <div class="bg-slate-950/70 p-2 rounded-xl border border-slate-800 text-xs font-mono text-emerald-200">
+                        <span class="text-slate-400 text-[10px] block mb-0.5">Ecuación Punto-Pendiente:</span>
+                        <div class="font-bold text-sm" id="tangentFullEquation">y = 4.00 · (x - 2.00) + 0.00</div>
                     </div>
+
+                    <p class="text-xs text-slate-300 bg-emerald-950/20 p-2.5 rounded-xl border border-emerald-900/30 leading-relaxed" id="derivativeInterpretation">
+                        La derivada indica la tasa de cambio instantánea. Una pendiente positiva significa que $f(x)$ va creciendo en este punto.
+                    </p>
                 </div>
 
             </div>
@@ -332,11 +356,11 @@
     </main>
 
     <!-- Modal Informativo / Ayuda -->
-    <div id="helpModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity">
+    <div id="helpModal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-200">
         <div class="glass-panel bg-slate-900 border-slate-700 rounded-2xl max-w-md w-full p-6 shadow-2xl space-y-4">
             <div class="flex justify-between items-center border-b border-slate-800 pb-3">
                 <h3 class="font-bold text-white text-base flex items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap text-blue-400"></i> ¿Cómo explorar?
+                    <i class="fa-solid fa-graduation-cap text-blue-400"></i> Guía del Usuario
                 </h3>
                 <button id="btnCloseModal" class="text-slate-400 hover:text-white">
                     <i class="fa-solid fa-xmark text-lg"></i>
@@ -345,16 +369,18 @@
             
             <div class="space-y-3 text-xs text-slate-300 leading-relaxed">
                 <p>
-                    <strong class="text-blue-400">1. Función f(x):</strong> Escribe expresiones algebraicas en lenguaje natural (ej. <code class="bg-slate-800 px-1 py-0.5 rounded text-pink-300">x^2 - 4</code>, <code class="bg-slate-800 px-1 py-0.5 rounded text-pink-300">sin(x)</code>, <code class="bg-slate-800 px-1 py-0.5 rounded text-pink-300">1/x</code>).
+                    <strong class="text-blue-400">1. Función f(x):</strong> Escribe cualquier función matemática. Soporta polinomios (<code class="bg-slate-800 px-1 py-0.5 rounded text-pink-300">x^2 - 4</code>), trigonométricas (<code class="bg-slate-800 px-1 py-0.5 rounded text-pink-300">sin(x)</code>) o racionales (<code class="bg-slate-800 px-1 py-0.5 rounded text-pink-300">1/x</code>).
                 </p>
                 <p>
-                    <strong class="text-emerald-400">2. Derivada (Pendiente):</strong> Mueve el deslizador <code class="bg-slate-800 px-1 rounded text-emerald-300">x0</code> para deslizar el punto sobre la curva. La recta verde representa la <em>recta tangente</em>. Su inclinación es la derivada $f'(x_0)$.
+                    <strong class="text-emerald-400">2. Punto 'a':</strong> Cambia el valor de $a$ usando el slider o escribiendo el número. La app calculará en tiempo real:
                 </p>
+                <ul class="list-disc pl-5 space-y-1 text-slate-400">
+                    <li><strong class="text-white">f(a):</strong> Valor evaluado exactamente en la curva.</li>
+                    <li><strong class="text-amber-300">Límite:</strong> Resultado de aproximar $x$ por izquierda ($a-h$) y por derecha ($a+h$).</li>
+                    <li><strong class="text-emerald-300">Derivada:</strong> La pendiente $m = f'(a)$ y la ecuación de la recta tangente $y = m(x-a) + f(a)$.</li>
+                </ul>
                 <p>
-                    <strong class="text-amber-400">3. Límites:</strong> Activa el límite para observar cómo se comporta la función cuando nos acercamos a un valor $c$ desde la izquierda y desde la derecha mediante un pequeño paso $h$.
-                </p>
-                <p>
-                    <strong class="text-purple-400">4. Navegación en el gráfico:</strong> Haz clic y arrastra sobre la gráfica para mover el origen. Usa la rueda del ratón o los botones para hacer zoom.
+                    <strong class="text-purple-400">3. Interacción con el Gráfico:</strong> Arrastra la gráfica con el ratón o dedo para mover los ejes. Haz Zoom con la rueda del ratón o con los botones de zoom.
                 </p>
             </div>
 
@@ -365,30 +391,29 @@
     </div>
 
     <script>
-        // --- ESTADO DE LA APLICACIÓN ---
+        // --- ESTADO GLOBAL DE LA APLICACIÓN ---
         const state = {
-            expressionStr: 'x^2 - 3*x + 2',
+            expressionStr: 'x^2 - 4',
             compiledExpr: null,
             compiledDeriv: null,
-            x0: 1.5,
-            showTangent: true,
-            showDerivative: false,
-            
-            // Límites
-            enableLimit: false,
-            cVal: 1.0,
-            hVal: 0.1,
+            a: 2.0,
+            hVal: 0.01,
 
-            // Vista del Canvas (Zoom & Pan)
-            scale: 50, // Píxeles por unidad matemática
-            offsetX: 0, // Desplazamiento desde el centro en px
+            // Capas visuales
+            showTangent: true,
+            showLimitVisual: true,
+            showDerivative: false,
+
+            // Coordenadas y Zoom del Canvas
+            scale: 50, // Píxeles por unidad
+            offsetX: 0,
             offsetY: 0,
             isDragging: false,
             dragStartX: 0,
             dragStartY: 0
         };
 
-        // --- DOM ELEMENTS ---
+        // --- REFERENCIAS AL DOM ---
         const canvas = document.getElementById('graphCanvas');
         const ctx = canvas.getContext('2d');
         const canvasWrapper = document.getElementById('canvasWrapper');
@@ -398,30 +423,34 @@
         const btnClearFunc = document.getElementById('btnClearFunc');
         const presetBtns = document.querySelectorAll('.preset-btn');
 
-        const x0Slider = document.getElementById('x0Slider');
-        const x0ValDisplay = document.getElementById('x0ValDisplay');
-        const chkShowTangent = document.getElementById('chkShowTangent');
-        const chkShowDerivative = document.getElementById('chkShowDerivative');
-
-        const chkEnableLimit = document.getElementById('chkEnableLimit');
-        const limitControls = document.getElementById('limitControls');
-        const cSlider = document.getElementById('cSlider');
-        const cValDisplay = document.getElementById('cValDisplay');
+        const aSlider = document.getElementById('aSlider');
+        const aNumInput = document.getElementById('aNumInput');
         const hSlider = document.getElementById('hSlider');
         const hValDisplay = document.getElementById('hValDisplay');
+        const hStepText = document.getElementById('hStepText');
 
-        const outFx0 = document.getElementById('outFx0');
-        const outSlope = document.getElementById('outSlope');
-        const derivativeExplanation = document.getElementById('derivativeExplanation');
-        const expSlopeText = document.getElementById('expSlopeText');
-        const expTrendText = document.getElementById('expTrendText');
+        const chkShowTangent = document.getElementById('chkShowTangent');
+        const chkShowLimitVisual = document.getElementById('chkShowLimitVisual');
+        const chkShowDerivative = document.getElementById('chkShowDerivative');
 
-        const limitDisabledMsg = document.getElementById('limitDisabledMsg');
-        const limitResultsGroup = document.getElementById('limitResultsGroup');
-        const limitConclusionBox = document.getElementById('limitConclusionBox');
-        const outLimitLeft = document.getElementById('outLimitLeft');
-        const outLimitRight = document.getElementById('outLimitRight');
-        const limitExplanationText = document.getElementById('limitExplanationText');
+        // Respuestas Explícitas DOM
+        const evalFormula = document.getElementById('evalFormula');
+        const evalAnswer = document.getElementById('evalAnswer');
+        const evalSubtext = document.getElementById('evalSubtext');
+
+        const limitFormula = document.getElementById('limitFormula');
+        const limitAnswer = document.getElementById('limitAnswer');
+        const limitSubtext = document.getElementById('limitSubtext');
+        const limLeftDetail = document.getElementById('limLeftDetail');
+        const limRightDetail = document.getElementById('limRightDetail');
+        const limitConclusionExplanation = document.getElementById('limitConclusionExplanation');
+
+        const derivFormula = document.getElementById('derivFormula');
+        const derivAnswer = document.getElementById('derivAnswer');
+        const tangentEqAnswer = document.getElementById('tangentEqAnswer');
+        const slopeTag = document.getElementById('slopeTag');
+        const tangentFullEquation = document.getElementById('tangentFullEquation');
+        const derivativeInterpretation = document.getElementById('derivativeInterpretation');
 
         const legendTangent = document.getElementById('legendTangent');
         const legendDerivative = document.getElementById('legendDerivative');
@@ -432,19 +461,18 @@
         const btnCloseModal = document.getElementById('btnCloseModal');
         const btnModalGotIt = document.getElementById('btnModalGotIt');
 
-        // --- INICIALIZACIÓN Y EVENTOS ---
+        // --- INICIALIZACIÓN Y EVENT LISTENERS ---
         function init() {
-            // Ajustar resolución de Canvas
             resizeCanvas();
             window.addEventListener('resize', () => {
                 resizeCanvas();
                 render();
             });
 
-            // Recompilar expresión inicial
+            // Recompilar la función inicial
             updateFunctionExpression(state.expressionStr);
 
-            // Escuchadores para la función
+            // Escuchadores de input de función
             funcInput.addEventListener('input', (e) => {
                 updateFunctionExpression(e.target.value);
             });
@@ -462,16 +490,38 @@
                 });
             });
 
-            // Sliders y Checkboxes
-            x0Slider.addEventListener('input', (e) => {
-                state.x0 = parseFloat(e.target.value);
-                x0ValDisplay.textContent = state.x0.toFixed(2);
+            // Escuchadores del Punto 'a'
+            aSlider.addEventListener('input', (e) => {
+                state.a = parseFloat(e.target.value);
+                aNumInput.value = state.a.toFixed(2);
                 render();
             });
 
+            aNumInput.addEventListener('change', (e) => {
+                let val = parseFloat(e.target.value);
+                if (isNaN(val)) val = 0;
+                state.a = val;
+                aSlider.value = val;
+                render();
+            });
+
+            // Escuchador del Paso 'h'
+            hSlider.addEventListener('input', (e) => {
+                state.hVal = parseFloat(e.target.value);
+                hValDisplay.textContent = state.hVal.toFixed(3);
+                hStepText.textContent = state.hVal.toFixed(3);
+                render();
+            });
+
+            // Toggles de Capas
             chkShowTangent.addEventListener('change', (e) => {
                 state.showTangent = e.target.checked;
                 legendTangent.style.display = state.showTangent ? 'flex' : 'none';
+                render();
+            });
+
+            chkShowLimitVisual.addEventListener('change', (e) => {
+                state.showLimitVisual = e.target.checked;
                 render();
             });
 
@@ -481,38 +531,9 @@
                 render();
             });
 
-            chkEnableLimit.addEventListener('change', (e) => {
-                state.enableLimit = e.target.checked;
-                if (state.enableLimit) {
-                    limitControls.classList.remove('opacity-50', 'pointer-events-none');
-                    limitDisabledMsg.classList.add('hidden');
-                    limitResultsGroup.classList.remove('hidden');
-                    limitConclusionBox.classList.remove('hidden');
-                } else {
-                    limitControls.classList.add('opacity-50', 'pointer-events-none');
-                    limitDisabledMsg.classList.remove('hidden');
-                    limitResultsGroup.classList.add('hidden');
-                    limitConclusionBox.classList.add('hidden');
-                }
-                render();
-            });
-
-            cSlider.addEventListener('input', (e) => {
-                state.cVal = parseFloat(e.target.value);
-                cValDisplay.textContent = state.cVal.toFixed(2);
-                render();
-            });
-
-            hSlider.addEventListener('input', (e) => {
-                state.hVal = parseFloat(e.target.value);
-                hValDisplay.textContent = state.hVal.toFixed(3);
-                render();
-            });
-
-            // Canvas Zoom / Pan Events
+            // Controles de Canvas Zoom/Pan
             setupCanvasInteraction();
 
-            // Zoom buttons
             document.getElementById('btnZoomIn').addEventListener('click', () => {
                 state.scale = Math.min(state.scale * 1.25, 300);
                 render();
@@ -550,34 +571,30 @@
             canvas.height = rect.height;
         }
 
-        // --- MANEJO MATEMÁTICO ---
         function updateFunctionExpression(exprStr) {
             state.expressionStr = exprStr;
             funcError.classList.add('hidden');
 
             try {
-                // Compilar la función f(x)
                 state.compiledExpr = math.compile(exprStr);
-
-                // Probar evaluación rápida
+                // Probar evaluación rápida para atrapar errores de sintaxis
                 state.compiledExpr.evaluate({ x: 1 });
 
-                // Calcular simbólicamente o aproximar la derivada si es posible
+                // Intento de derivación simbólica
                 try {
                     const derivNode = math.derivative(exprStr, 'x');
                     state.compiledDeriv = derivNode.compile();
                 } catch (dErr) {
-                    state.compiledDeriv = null; // Caerá en derivación numérica si falla
+                    state.compiledDeriv = null; // Caerá en cálculo por diferencia finita
                 }
 
                 render();
             } catch (err) {
-                funcError.textContent = "Error de sintaxis en la expresión.";
+                funcError.textContent = "Sintaxis no válida. Usa expresiones como x^2 - 4, sin(x), 1/x.";
                 funcError.classList.remove('hidden');
             }
         }
 
-        // Evalúa f(x) de forma segura
         function evalF(x) {
             if (!state.compiledExpr) return NaN;
             try {
@@ -591,7 +608,6 @@
             }
         }
 
-        // Obtiene la derivada f'(x) (Simbólica o Diferencia Finita)
         function evalDeriv(x) {
             if (state.compiledDeriv) {
                 try {
@@ -601,12 +617,12 @@
                     }
                 } catch (e) {}
             }
-            // Derivación numérica por diferencia central
-            const h = 0.0001;
-            const y1 = evalF(x - h);
-            const y2 = evalF(x + h);
+            // Diferencia central en caso de que falle derivación simbólica
+            const eps = 0.00001;
+            const y1 = evalF(x - eps);
+            const y2 = evalF(x + eps);
             if (isNaN(y1) || isNaN(y2)) return NaN;
-            return (y2 - y1) / (2 * h);
+            return (y2 - y1) / (2 * eps);
         }
 
         function setupCanvasInteraction() {
@@ -627,7 +643,6 @@
                 state.isDragging = false;
             });
 
-            // Zoom con la rueda del ratón
             canvas.addEventListener('wheel', (e) => {
                 e.preventDefault();
                 const zoomFactor = e.deltaY < 0 ? 1.1 : 0.9;
@@ -639,7 +654,7 @@
                 }
             }, { passive: false });
 
-            // Sorteo de Toques (Touch devices)
+            // Soporte Táctil para móviles
             let touchStartX = 0;
             let touchStartY = 0;
             canvas.addEventListener('touchstart', (e) => {
@@ -663,7 +678,7 @@
             });
         }
 
-        // --- SISTEMA DE COORDENADAS CANVAS ---
+        // --- SISTEMA DE TRANSFORMACIÓN DE COORDENADAS ---
         function toScreenX(x) {
             const centerX = canvas.width / 2 + state.offsetX;
             return centerX + x * state.scale;
@@ -684,53 +699,141 @@
             ctx.fillStyle = '#020617'; // slate-950
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Dibujar cuadrícula y ejes
+            // Dibujar cuadrícula y ejes Cartesianos
             drawGrid();
 
             if (!state.compiledExpr) return;
 
-            // 1. Graficar función f(x)
-            drawCurve((x) => evalF(x), '#3b82f6', 2.5); // azul brillante
+            const a = state.a;
+            const h = state.hVal;
 
-            // 2. Graficar derivada f'(x) si está habilitada
+            // 1. EVALUAR VALORES MATEMÁTICOS
+            const fa = evalF(a);
+            const slope = evalDeriv(a);
+
+            const xLeft = a - h;
+            const xRight = a + h;
+            const fLeft = evalF(xLeft);
+            const fRight = evalF(xRight);
+
+            // 2. ACTUALIZAR TARJETAS DE RESPUESTAS EXPLÍCITAS
+            updateExplicitAnswerCards(a, fa, slope, xLeft, xRight, fLeft, fRight, h);
+
+            // 3. GRAFICAR CURVAS
+            // Función Principal f(x)
+            drawCurve((x) => evalF(x), '#3b82f6', 2.5);
+
+            // Curva Derivada f'(x) si está marcada
             if (state.showDerivative) {
-                drawCurve((x) => evalDeriv(x), '#a855f7', 1.8, [4, 4]); // púrpura punteado
+                drawCurve((x) => evalDeriv(x), '#c084fc', 1.8, [4, 4]);
             }
 
-            // 3. Evaluar y mostrar punto x0 y Tangente
-            const y0 = evalF(state.x0);
-            const slope = evalDeriv(state.x0);
+            // 4. GRAFICAR RECTA TANGENTE Y PUNTOS EN EL CANVAS
+            if (!isNaN(fa)) {
+                // Dibujar líneas punteadas de referencia a los ejes
+                drawReferenceLines(a, fa, '#10b981');
 
-            // Actualizar interfaz textual
-            outFx0.textContent = `f(${state.x0.toFixed(2)}) = ${isNaN(y0) ? 'Indefinido' : y0.toFixed(3)}`;
-            outSlope.textContent = `f'(${state.x0.toFixed(2)}) = ${isNaN(slope) ? 'Indefinido' : slope.toFixed(3)}`;
-
-            updateDerivativeExplanation(slope);
-
-            if (!isNaN(y0)) {
-                // Dibujar líneas guía punteadas hacia los ejes
-                drawReferenceLines(state.x0, y0, '#10b981');
-
-                // Dibujar Tangente
+                // Dibujar Recta Tangente
                 if (state.showTangent && !isNaN(slope)) {
-                    drawTangentLine(state.x0, y0, slope);
+                    drawTangentLine(a, fa, slope);
                 }
 
-                // Dibujar punto destacado (x0, f(x0))
-                drawPoint(state.x0, y0, '#10b981', 6, `(${state.x0.toFixed(2)}, ${y0.toFixed(2)})`);
+                // Dibujar punto de evaluación principal (a, f(a))
+                drawPoint(a, fa, '#10b981', 6.5, `P(${a.toFixed(2)}, ${fa.toFixed(2)})`);
             }
 
-            // 4. Análisis de Límites si está activo
-            if (state.enableLimit) {
-                renderLimitAnalysis();
+            // 5. VISUALIZACIÓN DE LÍMITES LATERALES EN EL GRÁFICO
+            if (state.showLimitVisual) {
+                if (!isNaN(fLeft)) {
+                    drawPoint(xLeft, fLeft, '#f59e0b', 4.5, `Izq: ${fLeft.toFixed(3)}`);
+                    drawReferenceLines(xLeft, fLeft, '#f59e0b');
+                }
+                if (!isNaN(fRight)) {
+                    drawPoint(xRight, fRight, '#f59e0b', 4.5, `Der: ${fRight.toFixed(3)}`);
+                    drawReferenceLines(xRight, fRight, '#f59e0b');
+                }
             }
         }
 
+        // ACTUALIZACIÓN DE TARJETAS DE RESULTADOS DESTACADAS
+        function updateExplicitAnswerCards(a, fa, slope, xLeft, xRight, fLeft, fRight, h) {
+            const strA = a.toFixed(2);
+
+            // 1. CARD EVALUACIÓN f(a)
+            evalFormula.textContent = `f(${strA}) =`;
+            if (isNaN(fa)) {
+                evalAnswer.textContent = "Indefinido";
+                evalAnswer.className = "text-xl font-bold font-mono text-red-400 tracking-tight";
+                evalSubtext.textContent = "La función no existe en este punto";
+            } else {
+                evalAnswer.textContent = fa.toFixed(3);
+                evalAnswer.className = "text-xl font-bold font-mono text-white tracking-tight";
+                evalSubtext.textContent = `Punto exacto: (${strA}, ${fa.toFixed(3)})`;
+            }
+
+            // 2. CARD LÍMITE lim x->a f(x)
+            limitFormula.textContent = `lim x→${strA} f(x) =`;
+            limLeftDetail.textContent = isNaN(fLeft) ? "Indefinido" : `f(${xLeft.toFixed(3)}) = ${fLeft.toFixed(3)}`;
+            limRightDetail.textContent = isNaN(fRight) ? "Indefinido" : `f(${xRight.toFixed(3)}) = ${fRight.toFixed(3)}`;
+
+            if (isNaN(fLeft) || isNaN(fRight)) {
+                limitAnswer.textContent = "No existe";
+                limitAnswer.className = "text-xl font-bold font-mono text-red-400 tracking-tight";
+                limitSubtext.textContent = "Valores indefinidos en la vecindad";
+                limitConclusionExplanation.innerHTML = `<span class="text-red-400 font-semibold">El límite NO existe:</span> La función no puede evaluarse cerca de $a = ${strA}$.`;
+            } else {
+                const diff = Math.abs(fLeft - fRight);
+                if (diff < 0.1) {
+                    const limEst = ((fLeft + fRight) / 2).toFixed(3);
+                    limitAnswer.textContent = limEst;
+                    limitAnswer.className = "text-xl font-bold font-mono text-amber-300 tracking-tight";
+                    limitSubtext.textContent = `Izq: ${fLeft.toFixed(3)} | Der: ${fRight.toFixed(3)}`;
+                    limitConclusionExplanation.innerHTML = `Como las aproximaciones laterales coinciden ($\lim_{x \to a^-} \approx ${fLeft.toFixed(3)}$ y $\lim_{x \to a^+} \approx ${fRight.toFixed(3)}$), <strong class="text-amber-300">el límite existe y es ${limEst}</strong>.`;
+                } else {
+                    limitAnswer.textContent = "No existe (Salto)";
+                    limitAnswer.className = "text-xl font-bold font-mono text-red-400 tracking-tight";
+                    limitSubtext.textContent = `Izq: ${fLeft.toFixed(3)} ≠ Der: ${fRight.toFixed(3)}`;
+                    limitConclusionExplanation.innerHTML = `<span class="text-red-400 font-semibold">Discontinuidad por salto:</span> El valor por la izquierda (${fLeft.toFixed(3)}) difiere del valor por la derecha (${fRight.toFixed(3)}).`;
+                }
+            }
+
+            // 3. CARD DERIVADA f'(a) Y RECTA TANGENTE
+            derivFormula.textContent = `f'(${strA}) =`;
+            if (isNaN(slope)) {
+                derivAnswer.textContent = "Indefinida";
+                derivAnswer.className = "text-xl font-bold font-mono text-red-400 tracking-tight";
+                tangentEqAnswer.textContent = "Sin recta tangente";
+                slopeTag.textContent = "m = Indef.";
+                tangentFullEquation.textContent = "No diferenciable en este punto";
+                derivativeInterpretation.innerHTML = `<span class="text-red-400 font-semibold">No diferenciable:</span> La función tiene una punta, salto o tangente vertical.`;
+            } else {
+                derivAnswer.textContent = slope.toFixed(3);
+                derivAnswer.className = "text-xl font-bold font-mono text-emerald-300 tracking-tight";
+                slopeTag.textContent = `m = ${slope.toFixed(3)}`;
+
+                // Ecuación de la recta tangente: y = m*x + (fa - m*a)
+                const intercept = fa - slope * a;
+                const sign = intercept >= 0 ? '+' : '-';
+                const tangentEqStr = `y = ${slope.toFixed(2)}x ${sign} ${Math.abs(intercept).toFixed(2)}`;
+                tangentEqAnswer.textContent = tangentEqStr;
+
+                tangentFullEquation.textContent = `y = ${slope.toFixed(2)} · (x - ${strA}) ${fa >= 0 ? '+' : '-'} ${Math.abs(fa).toFixed(2)}`;
+
+                if (Math.abs(slope) < 0.01) {
+                    derivativeInterpretation.innerHTML = `La pendiente es <strong class="text-amber-300">m = 0 (Horizontal)</strong>. Indica un <strong>punto crítico</strong> (posible máximo, mínimo o punto de inflexión).`;
+                } else if (slope > 0) {
+                    derivativeInterpretation.innerHTML = `Pendiente <strong class="text-emerald-300">positiva (m = ${slope.toFixed(2)})</strong>. Significa que la función $f(x)$ está <strong class="text-emerald-300">creciendo</strong> de izquierda a derecha.`;
+                } else {
+                    derivativeInterpretation.innerHTML = `Pendiente <strong class="text-rose-400">negativa (m = ${slope.toFixed(2)})</strong>. Significa que la función $f(x)$ está <strong class="text-rose-400">decreciendo</strong> de izquierda a derecha.`;
+                }
+            }
+        }
+
+        // FUNCIONES DE DIBUJO EN CANVAS
         function drawGrid() {
             const centerX = canvas.width / 2 + state.offsetX;
             const centerY = canvas.height / 2 + state.offsetY;
 
-            // Determinar paso de cuadrícula dinámico según el zoom
             let gridStep = 1;
             if (state.scale < 25) gridStep = 5;
             if (state.scale < 10) gridStep = 10;
@@ -741,12 +844,9 @@
             const maxX = toMathX(canvas.width);
             const startX = Math.floor(minX / gridStep) * gridStep;
 
-            const startYPx = Math.floor((-centerY) / state.scale / gridStep) * gridStep;
-
-            // Líneas secundarias de cuadrícula
             ctx.lineWidth = 1;
-            ctx.strokeStyle = '#1e293b'; // slate-800
-            ctx.fillStyle = '#64748b'; // slate-500
+            ctx.strokeStyle = '#1e293b';
+            ctx.fillStyle = '#64748b';
             ctx.font = '10px Inter, sans-serif';
 
             // Verticales
@@ -757,7 +857,6 @@
                 ctx.lineTo(px, canvas.height);
                 ctx.stroke();
 
-                // Números en Eje X
                 if (Math.abs(x) > 0.0001 && px > 20 && px < canvas.width - 20) {
                     const textY = Math.max(15, Math.min(canvas.height - 10, centerY + 15));
                     ctx.fillText(x % 1 === 0 ? x.toFixed(0) : x.toFixed(1), px - 6, textY);
@@ -776,14 +875,13 @@
                 ctx.lineTo(canvas.width, py);
                 ctx.stroke();
 
-                // Números en Eje Y
                 if (Math.abs(y) > 0.0001 && py > 20 && py < canvas.height - 10) {
                     const textX = Math.max(10, Math.min(canvas.width - 25, centerX + 5));
                     ctx.fillText(y % 1 === 0 ? y.toFixed(0) : y.toFixed(1), textX, py + 3);
                 }
             }
 
-            // Eje X principal
+            // Ejes Principales
             ctx.strokeStyle = '#475569';
             ctx.lineWidth = 1.8;
             ctx.beginPath();
@@ -791,13 +889,11 @@
             ctx.lineTo(canvas.width, centerY);
             ctx.stroke();
 
-            // Eje Y principal
             ctx.beginPath();
             ctx.moveTo(centerX, 0);
             ctx.lineTo(centerX, canvas.height);
             ctx.stroke();
 
-            // Origen '0'
             ctx.fillText("0", centerX - 12, centerY + 14);
         }
 
@@ -809,7 +905,7 @@
             if (dashArray.length > 0) ctx.setLineDash(dashArray);
 
             let isDrawing = false;
-            const stepPx = 2; // Precisión de trazado en px
+            const stepPx = 2;
 
             for (let px = 0; px <= canvas.width; px += stepPx) {
                 const mathX = toMathX(px);
@@ -822,7 +918,6 @@
 
                 const py = toScreenY(mathY);
 
-                // Evitar dibujar saltos verticales por asíntotas extremadamente grandes
                 if (py < -2000 || py > canvas.height + 2000) {
                     isDrawing = false;
                     continue;
@@ -845,7 +940,6 @@
             ctx.strokeStyle = '#10b981'; // esmeralda
             ctx.lineWidth = 2;
 
-            // Ecuación de la recta tangente: y - y0 = m*(x - x0)  =>  y = m*(x - x0) + y0
             const xLeft = toMathX(0);
             const xRight = toMathX(canvas.width);
 
@@ -890,15 +984,13 @@
             ctx.strokeStyle = color;
             ctx.lineWidth = 1;
             ctx.setLineDash([3, 3]);
-            ctx.globalAlpha = 0.6;
+            ctx.globalAlpha = 0.5;
 
-            // Línea hacia el Eje X
             ctx.beginPath();
             ctx.moveTo(px, py);
             ctx.lineTo(px, axisY);
             ctx.stroke();
 
-            // Línea hacia el Eje Y
             ctx.beginPath();
             ctx.moveTo(px, py);
             ctx.lineTo(axisX, py);
@@ -907,68 +999,6 @@
             ctx.restore();
         }
 
-        function renderLimitAnalysis() {
-            const c = state.cVal;
-            const h = state.hVal;
-
-            const xLeft = c - h;
-            const xRight = c + h;
-
-            const yLeft = evalF(xLeft);
-            const yRight = evalF(xRight);
-            const yCenter = evalF(c);
-
-            // Actualizar panel numérico
-            outLimitLeft.textContent = `f(${xLeft.toFixed(2)}) = ${isNaN(yLeft) ? 'Indef.' : yLeft.toFixed(3)}`;
-            outLimitRight.textContent = `f(${xRight.toFixed(2)}) = ${isNaN(yRight) ? 'Indef.' : yRight.toFixed(3)}`;
-
-            // Explicación intuitiva
-            const diff = Math.abs(yLeft - yRight);
-            if (isNaN(yLeft) || isNaN(yRight)) {
-                limitExplanationText.innerHTML = `<span class="text-red-400 font-bold">Límite Indefinido:</span> La función no está definida en la vecindad de $c = ${c.toFixed(2)}$.`;
-            } else if (diff < 0.15) {
-                const approxVal = ((yLeft + yRight) / 2).toFixed(2);
-                limitExplanationText.innerHTML = `Ambos lados se aproximan al mismo valor ($\approx ${approxVal}$). <strong class="text-amber-300">El límite existe y vale ${approxVal}</strong>.`;
-            } else {
-                limitExplanationText.innerHTML = `<span class="text-red-400 font-bold">Salto / Discontinuidad:</span> Por la izquierda tiende a ${yLeft.toFixed(2)} y por la derecha a ${yRight.toFixed(2)}. <strong class="text-red-300">El límite NO existe.</strong>`;
-            }
-
-            // Trazar en gráfico los puntos de aproximación lateral (Ámbar)
-            if (!isNaN(yLeft)) {
-                drawPoint(xLeft, yLeft, '#f59e0b', 5, `Izq: ${yLeft.toFixed(2)}`);
-                drawReferenceLines(xLeft, yLeft, '#f59e0b');
-            }
-            if (!isNaN(yRight)) {
-                drawPoint(xRight, yRight, '#f59e0b', 5, `Der: ${yRight.toFixed(2)}`);
-                drawReferenceLines(xRight, yRight, '#f59e0b');
-            }
-
-            // Marcador en 'c' en el eje X
-            const pcX = toScreenX(c);
-            const pcY = toScreenY(0);
-            ctx.save();
-            ctx.fillStyle = '#f59e0b';
-            ctx.font = 'bold 12px Inter';
-            ctx.fillText(`c=${c.toFixed(2)}`, pcX - 15, pcY + 20);
-            ctx.restore();
-        }
-
-        function updateDerivativeExplanation(slope) {
-            if (isNaN(slope)) {
-                derivativeExplanation.innerHTML = `<span class="text-slate-400">La derivada no está definida en este punto (posible asíntota o punto no diferenciable).</span>`;
-                return;
-            }
-
-            if (Math.abs(slope) < 0.05) {
-                derivativeExplanation.innerHTML = `La pendiente es <strong class="text-amber-300">cero (horizontal)</strong>. Este es un punto crítico (posible máximo, mínimo o punto de inflexión).`;
-            } else if (slope > 0) {
-                derivativeExplanation.innerHTML = `La pendiente es <strong class="text-emerald-300">positiva (${slope.toFixed(2)})</strong>. Significa que la función está <strong class="text-emerald-300">creciendo</strong> hacia la derecha.`;
-            } else {
-                derivativeExplanation.innerHTML = `La pendiente es <strong class="text-rose-400">negativa (${slope.toFixed(2)})</strong>. Significa que la función está <strong class="text-rose-400">decreciendo</strong> hacia la derecha.`;
-            }
-        }
-
-        // Iniciar al cargar la ventana
         window.onload = init;
     </script>
 </body>
